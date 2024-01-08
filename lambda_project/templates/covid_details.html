@@ -1,0 +1,100 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Pesquisa de interações do banco de dados</h5>
+            <form class="row g-3" method='post'>
+                {% csrf_token %}
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text"
+                               maxlength="5"
+                               name="protein"
+                               class="form-control"
+                               id="id_protein"
+                               placeholder="Proteína">
+                        <label for="id_protein">Proteína</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="number"
+                               name="farmaco"
+                               class="form-control"
+                               id="id_farmaco"
+                               placeholder="Farmaco">
+                        <label for="id_farmaco">Farmaco</label>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Pesquisar</button>
+                    <button type="reset" class="btn btn-secondary">Limpar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Consulta banco PLIP</h5>
+                        <p>Complexos X</p>
+                        <!-- <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable -->
+                        <!-- Table with stripped rows -->
+                        <div class="table-responsive">
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Proteína</th>
+                                        <th scope="col">PDB</th>
+                                        <th scope="col">Fármaco</th>
+                                        <th scope="col">Pocket</th>
+                                        <th scope="col">Análogo</th>
+                                        <th scope="col">Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for complex in complexes|slice:":20" %}
+                                        <tr>
+                                            {% if farmaco %}
+                                                <td>{{ protein }}</td>
+                                            {% else %}
+                                                <td>
+                                                    <a href="url 'covid' protein=complex.nm_protein">{{ complex.nm_protein }}</a>
+                                                </td>
+                                            {% endif %}
+                                            <td>
+                                                <a href="url 'covid' pdb=complex.id_pdb.id_pdb">{{ complex.id_pdb.id_pdb }}</a>
+                                            </td>
+                                            <td>{{ complex.id_pdb.id_pdb }}</td>
+                                            {% if farmaco %}
+                                                <td>{{ farmaco }}</td>
+                                            {% else %}
+                                                <td>
+                                                    <a href="url 'covid' farmaco=complex.nm_farmaco">{{ complex.nm_farmaco }}</a>
+                                                </td>
+                                            {% endif %}
+                                            <td>
+                                                <a href="url 'covid_details' pocket=complex.id_pocket">{{ complex.id_pocket }}</a>
+                                            </td>
+                                            <td>
+                                                <a href="url 'covid_details' analogo=complex.nm_analogo">{{ complex.nm_analogo }}</a>
+                                            </td>
+                                            <td>
+                                                <a href="url 'covid_details' score=complex.vl_score">{{ complex.vl_score }}</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- End Table with stripped rows -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Pesquisa de interações do banco de dados</h5>
+            <form class="row g-3" method='post'>
+                {% csrf_token %}
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text"
+                               maxlength="5"
+                               name="pdb"
+                               class="form-control"
+                               id="id_pdb"
+                               placeholder="Proteína">
+                        <label for="id_pdb">Proteína</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="number"
+                               name="pocket"
+                               class="form-control"
+                               id="id_pocket"
+                               placeholder="Pocket">
+                        <label for="id_pocket">Pocket</label>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Pesquisar</button>
+                    <button type="reset" class="btn btn-secondary">Limpar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% if id_pdb %}
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Consulta banco PLIP</h5>
+                            <div>
+                                <p>
+                                    Interações da proteina <a target="_blank"
+    rel="noopener noreferrer"
+    href="https://www.rcsb.org/structure/{{ id_pdb }}"><b>{{ id_pdb }}</b></a>, pocket <b>{{ id_pocket }}</b>
+                                </p>
+                                <button id="copy_button"
+                                        data-residue="{{ residue }}"
+                                        class="btn btn-primary"
+                                        onclick="copyText()">Copiar Residuos</button>
+                            </div>
+                            <div></div>
+                            <!-- <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable -->
+                            <!-- Table with stripped rows -->
+                            <div class="table-responsive">
+                                <table class="table datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">resnr</th>
+                                            <th scope="col">type</th>
+                                            <th scope="col">protis</th>
+                                            <th scope="col">quantidade</th>
+                                            <th scope="col">min_dist</th>
+                                            <th scope="col">max_dist</th>
+                                            <th scope="col">avg_dist</th>
+                                            <th scope="col">x</th>
+                                            <th scope="col">y</th>
+                                            <th scope="col">z</th>
+                                            <th scope="col">sd_dist</th>
+                                            <th scope="col">raio</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for interaction in interactions %}
+                                            <tr>
+                                                <td>{{ interaction.resnr }}{{ interaction.reschain }}{{ interaction.restype }}</td>
+                                                <td>{{ interaction.type }}</td>
+                                                <td>{{ interaction.protis }}</td>
+                                                <td align="right">{{ interaction.quantidade }}</td>
+                                                <td align="right">{{ interaction.min_dist|floatformat:3 }}</td>
+                                                <td align="right">{{ interaction.max_dist|floatformat:3 }}</td>
+                                                <td align="right">{{ interaction.avg_dist|floatformat:3 }}</td>
+                                                <td align="right">{{ interaction.x|floatformat:3 }}</td>
+                                                <td align="right">{{ interaction.y|floatformat:3 }}</td>
+                                                <td align="right">{{ interaction.z|floatformat:3 }}</td>
+                                                <td align="right">{{ interaction.sd_dist|floatformat:3 }}</td>
+                                                <td align="right">{{ interaction.raio|floatformat:3 }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- End Table with stripped rows -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endblock content %}
+{% block scripts %}
+    <script>
+    const residue_data = document.querySelector("#copy_button");
+    const residue = residue_data.dataset.residue
+    const copyText = async () => {
+        try {
+          await navigator.clipboard.writeText(residue);
+          console.log('Content copied to clipboard');
+        } catch (err) {
+          console.error('Failed to copy: ', err);
+    }
+  }
+    </script>
+{% endblock scripts %}
