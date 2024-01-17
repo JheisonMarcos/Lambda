@@ -31,14 +31,14 @@ def covidListPageView(request):
         pdb = request.GET.get("pdb")
         farmaco = request.GET.get("farmaco")
 
-    context["protein"] = protein
-    context["pdb"] = pdb
-    context["farmaco"] = farmaco
     if protein:
+        context["protein"] = protein
         data.filter(id_pdb__nm_protein=protein)
     if pdb:
+        context["pdb"] = pdb
         data.filter(id_pdb=pdb)
     if farmaco:
+        context["farmaco"] = farmaco
         data.filter(nm_farmaco=farmaco)
 
     if protein or pdb or farmaco:
@@ -49,4 +49,22 @@ def covidListPageView(request):
 
 def covidDetailsPageView(request):
     context = {}
+
+    data = VsRaw.objects.exclude(nm_farmaco="profluis", id_pdb="7K3G")
+
+    if request.method == "GET":
+        pocket = request.GET.get("pocket")
+        analogo = request.GET.get("analogo")
+        score = request.GET.get("score")
+
+        if score:
+            context["score"] = score
+            data.filter(vl_score=score)
+        if pocket:
+            context["pocket"] = pocket
+            data.filter(pocket=pocket)
+        if analogo:
+            context["analogo"] = analogo
+            data.filter(nm_analogo=analogo)
+
     return render(request, "covid_details.html", context)

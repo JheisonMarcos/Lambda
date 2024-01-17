@@ -58,45 +58,34 @@
                                     <tbody>
                                         {% for complex in complexes|slice:":20" %}
                                             <tr>
-                                                {% if protein %}
-                                                    <td>{{ protein }}</td>
-                                                {% else %}
-                                                    <td>
-                                                        <a href="{% url 'covid_list' %}?protein={{ complex.nm_protein|urlencode }}">{{ complex.nm_protein }}</a>
-                                                    </td>
-                                                {% endif %}
                                                 <td>
-                                                    <a href="{% url 'covid_list' %}?id_pdb={{ complex.id_pdb.id_pdb|urlencode }}">{{ complex.id_pdb.id_pdb }}</a>
-                                                </td>
-                                                {% if farmaco %}
-                                                    <td>{{ farmaco }}</td>
-                                                {% else %}
-                                                    <td>
-                                                        <a href="{% url 'covid_list' %}?farmaco={{ complex.nm_farmaco|urlencode }}">{{ complex.nm_farmaco }}</a>
-                                                    </td>
-                                                {% endif %}
-                                                <td>
-                                                    <!-- <a href="{% url 'covid_details' %}?pocket={{ complex.id_pocket|urlencode }}"></a> -->
-                                                    {{ complex.id_pocket }}
+                                                    <a href="{% url 'covid_list' %}?protein={{ complex.nm_protein|urlencode }}">{{ complex.nm_protein }}</a>
                                                 </td>
                                                 <td>
-                                                    <!-- <a href="{% url 'covid_details' %}?analogo={{ complex.nm_analogo|urlencode }}"></a> -->
-                                                    {{ complex.nm_analogo }}
+                                                    <a href="{% url 'covid_list' %}?pdb={{ complex.id_pdb.id_pdb|urlencode }}">{{ complex.id_pdb.id_pdb }}</a>
                                                 </td>
-                                                <td <!-- <a href="{% url 'covid_details' %}?score={{ complex.vl_score|urlencode }}">
-</a> -->
-                                                {{ complex.vl_score }}
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                                                <td>
+                                                    <a href="{% url 'covid_list' %}?farmaco={{ complex.nm_farmaco|urlencode }}">{{ complex.nm_farmaco }}</a>
+                                                </td>
+                                                <td>
+                                            <a href="{% url 'covid_details' %}?pocket={{ complex.id_pocket|urlencode }}">{{ complex.id_pocket }}</a>
+                                                </td>
+                                                <td>
+                                            <a href="{% url 'covid_details' %}?analogo={{ complex.nm_analogo|urlencode }}">{{ complex.nm_analogo }}</a>
+                                                </td>
+                                                <td>
+                                            <a href="{% url 'covid_details' %}?score={{ complex.vl_score|urlencode }}">{{ complex.vl_score }}</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- End Table with stripped rows -->
                         </div>
-                        <!-- End Table with stripped rows -->
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-{% endif %}
+        </section>
+    {% endif %}
 {% endblock content %}
