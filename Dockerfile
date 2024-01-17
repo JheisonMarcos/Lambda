@@ -2,7 +2,6 @@ FROM python:3.11
 
 
 ARG WEBSITE_NAME=lambda_project
-ENV WEBSITE_NAME=${WEBSITE_NAME}
 
 # Instalar dependências do sistema
 RUN apt-get update && apt-get install -y \
@@ -25,6 +24,7 @@ RUN apt-get update && apt-get install -y \
 # Copiar arquivos do projeto
 COPY requirements.txt .
 RUN pip install -r requirements.txt
+RUN python3 /var/www/lambda_project/manage.py collectstatic
 
 # Expor a porta 80 no container
 EXPOSE 80
