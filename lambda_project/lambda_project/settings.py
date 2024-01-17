@@ -10,11 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,7 +25,14 @@ SECRET_KEY = "django-insecure-l6eo##w%bcm(m05!0=@4h&1d)s^qu8(-v7%x7o4oa)!$0x-b#(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.15.10', '150.165.131.12', '150.165.231.10', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [
+    "192.168.15.10",
+    "192.168.15.11",
+    "150.165.131.12",
+    "150.165.231.10",
+    "127.0.0.1",
+    "localhost",
+]
 
 
 # Application definition
@@ -38,9 +44,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "debug_toolbar", # debugging DB
+    "debug_toolbar",  # debugging DB
     "vsview.apps.VsviewConfig",
-    "covid.apps.CovidConfig"
+    "covid.apps.CovidConfig",
 ]
 
 MIDDLEWARE = [
@@ -58,7 +64,7 @@ ROOT_URLCONF = "lambda_project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'templates')],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -79,23 +85,24 @@ WSGI_APPLICATION = "lambda_project.wsgi.application"
 # Connect to a server using the ssh keys. See the sshtunnel documentation for using password authentication
 
 from sshtunnel import SSHTunnelForwarder
+
 ssh_tunnel = SSHTunnelForwarder(
     ("150.165.131.12", 9022),
     allow_agent=False,
     ssh_username="tucamar",
     ssh_password="naoesqueca",
-    remote_bind_address=('192.168.0.1', 5433),
+    remote_bind_address=("192.168.0.1", 5433),
 )
 ssh_tunnel.start()
 DATABASES = {
     "default": {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'HOST': 'localhost',
-        'PORT': ssh_tunnel.local_bind_port,
-        'NAME': 'vs',
-        'USER': 'web',
-        'PASSWORD': 'web',
-        'OPTIONS': {'options': '-c search_path=covid19'},
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "HOST": "localhost",
+        "PORT": ssh_tunnel.local_bind_port,
+        "NAME": "vs",
+        "USER": "web",
+        "PASSWORD": "web",
+        "OPTIONS": {"options": "-c search_path=covid19"},
     }
 }
 
@@ -106,7 +113,7 @@ DATABASES = {
 #         'PORT': 5433,
 #         'NAME': 'vs',
 #         'USER': 'web',
-#         'PASSWORD': 'web',  
+#         'PASSWORD': 'web',
 #         'OPTIONS': {'options': '-c search_path=covid19'},
 #     }
 # }
@@ -145,11 +152,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIR = [
-        os.path.join(BASE_DIR, 'static')
-        ]
+STATIC_URL = "/static/"
+STATICFILES_DIR = [os.path.join(BASE_DIR, "static")]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
