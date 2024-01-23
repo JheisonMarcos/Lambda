@@ -9,4 +9,6 @@ services:
         - ./lambda_project:/var/www/lambda_project
         - ./apache_django.conf:/etc/apache2/sites-available/000-default.conf
       command: bash -c "apache2ctl -D FOREGROUND"
+      restart: unless-stopped
+
 
