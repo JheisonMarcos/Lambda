@@ -5,24 +5,52 @@
             <h5 class="card-title">Pesquisa de interações do banco de dados</h5>
             <form class="row g-3" method='post'>
                 {% csrf_token %}
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <div class="form-floating">
                         <input type="text"
-                               maxlength="5"
                                name="protein"
                                class="form-control"
                                id="id_protein"
-                               placeholder="Proteína">
+                               placeholder="Proteína"
+                               list="protein_suggestion">
+                        <datalist id="protein_suggestion">
+                            {% for protein in proteins_list %}
+                                <option value="{{ protein }}">
+                            {% endfor %}
+                        </datalist>
                         <label for="id_protein">Proteína</label>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <input type="text"
+                               maxlength="5"
+                               name="pdb"
+                               class="form-control"
+                               id="id_pdb"
+                               placeholder="PDB"
+                               list="pdb_suggestion">
+                        <datalist id="pdb_suggestion">
+                            {% for pdb in pdb_list %}
+                                <option value="{{ pdb }}">
+                            {% endfor %}
+                        </datalist>
+                        <label for="id_pdb">PDB</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
                     <div class="form-floating">
                         <input type="text"
                                name="farmaco"
                                class="form-control"
                                id="id_farmaco"
-                               placeholder="Farmaco">
+                               placeholder="Farmaco"
+                               list="farmaco_suggestion">
+                        <datalist id="farmaco_suggestion">
+                            {% for farmaco in farmacos_list %}
+                                <option value="{{ farmaco }}">
+                            {% endfor %}
+                        </datalist>
                         <label for="id_farmaco">Farmaco</label>
                     </div>
                 </div>
@@ -59,7 +87,7 @@
                                         {% for complex in complexes|slice:":20" %}
                                             <tr>
                                                 <td>
-                                                    <a href="{% url 'covid_list' %}?protein={{ complex.nm_protein|urlencode }}">{{ complex.nm_protein }}</a>
+                                                    <a href="{% url 'covid_list' %}?protein={{ complex.id_pdb__nm_protein|urlencode }}">{{ complex.id_pdb__nm_protein }}</a>
                                                 </td>
                                                 <td>
                                                     <a href="{% url 'covid_list' %}?pdb={{ complex.id_pdb.id_pdb|urlencode }}">{{ complex.id_pdb.id_pdb }}</a>
@@ -68,13 +96,13 @@
                                                     <a href="{% url 'covid_list' %}?farmaco={{ complex.nm_farmaco|urlencode }}">{{ complex.nm_farmaco }}</a>
                                                 </td>
                                                 <td>
-                                            <a href="{% url 'covid_details' %}?pocket={{ complex.id_pocket|urlencode }}">{{ complex.id_pocket }}</a>
+                                                    <a href="{% url 'covid_details' %}?pocket={{ complex.id|urlencode }}">{{ complex.id_pocket }}</a>
                                                 </td>
                                                 <td>
-                                            <a href="{% url 'covid_details' %}?analogo={{ complex.nm_analogo|urlencode }}">{{ complex.nm_analogo }}</a>
+                                                    <a href="{% url 'covid_details' %}?analogo={{ complex.id|urlencode }}">{{ complex.nm_analogo }}</a>
                                                 </td>
                                                 <td>
-                                            <a href="{% url 'covid_details' %}?score={{ complex.vl_score|urlencode }}">{{ complex.vl_score }}</a>
+                                                    <a href="{% url 'covid_details' %}?score={{ complex.id|urlencode }}">{{ complex.vl_score }}</a>
                                                 </td>
                                             </tr>
                                         {% endfor %}
