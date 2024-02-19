@@ -69,7 +69,7 @@ class PlipHalogen(models.Model):
         db_table_comment = "find . -maxdepth 2 -iname \"HalogenBonds.csv\" -exec cat {} \\;  > /tmp/HalogenBonds.csv\npsql -h 192.168.0.1 -d vs -U efolador\ndelete from covid19.plip_halogen;\n\\copy covid19.plip_halogen from '/tmp/HalogenBonds.csv' with CSV DELIMITER E'\\t';"
 
     def __str__(self):
-        return f"{self.__name__}-{self.id_pdb}-{self.id_pocket}"
+        return f"{self.id_pdb}-{self.id_pocket}"
 
 
 class PlipHydrogen(models.Model):
@@ -108,7 +108,7 @@ class PlipHydrogen(models.Model):
         db_table_comment = "find . -maxdepth 2 -iname \"HydrogenBonds.csv\" -exec cat {} \\;  > /tmp/HydrogenBonds.csv\npsql -h 192.168.0.1 -d vs -U efolador\ndelete from covid19.plip_hydrogen;\n\\copy covid19.plip_hydrogen from '/tmp/HydrogenBonds.csv' with CSV DELIMITER E'\\t';"
 
     def __str__(self):
-        return f"{self.__name__}-{self.id_pdb}-{self.id_pocket}"
+        return f"{self.id_pdb}-{self.id_pocket}"
 
 
 class PlipHydrophobic(models.Model):
@@ -135,7 +135,7 @@ class PlipHydrophobic(models.Model):
         db_table_comment = "find . -maxdepth 2 -iname \"HydrophobicInteractions.csv\" -exec cat {} \\;  > /tmp/HydrophobicInteractions.csv\npsql -h 192.168.0.1 -d vs -U efolador\ndelete from covid19.plip_hydrophobic;\n\\copy covid19.plip_hydrophobic from '/tmp/HydrophobicInteractions.csv' with CSV DELIMITER E'\\t';"
 
     def __str__(self):
-        return f"{self.__name__}-{self.id_pdb}-{self.id_pocket}"
+        return f"{self.id_pdb}-{self.id_pocket}"
 
 
 class PlipMetal(models.Model):
@@ -163,7 +163,7 @@ class PlipMetal(models.Model):
         db_table = "plip_metal"
 
     def __str__(self):
-        return f"{self.__name__}-{self.id_pdb}-{self.id_pocket}"
+        return f"{self.id_pdb}-{self.id_pocket}"
 
 
 class PlipPication(models.Model):
@@ -195,7 +195,7 @@ class PlipPication(models.Model):
         db_table_comment = "find . -maxdepth 2 -iname \"pi-CationInteractions.csv\" -exec cat {} \\;  > /tmp/pi-CationInteractions.csv\npsql -h 192.168.0.1 -d vs -U efolador\ndelete from covid19.plip_pication;\n\\copy covid19.plip_pication from '/tmp/pi-CationInteractions.csv' with CSV DELIMITER E'\\t';"
 
     def __str__(self):
-        return f"{self.__name__}-{self.id_pdb}-{self.id_pocket}"
+        return f"{self.id_pdb}-{self.id_pocket}"
 
 
 class PlipPistacking(models.Model):
@@ -229,7 +229,7 @@ class PlipPistacking(models.Model):
         db_table_comment = "find . -maxdepth 2 -iname \"pi-Stacking.csv\" -exec cat {} \\;  > /tmp/pi-Stacking.csv\npsql -h 192.168.0.1 -d vs -U efolador\ndelete from covid19.plip_pistacking;\n\\copy covid19.plip_pistacking from '/tmp/pi-Stacking.csv' with CSV DELIMITER E'\\t';"
 
     def __str__(self):
-        return f"{self.__name__}-{self.id_pdb}-{self.id_pocket}"
+        return f"{self.id_pdb}-{self.id_pocket}"
 
 
 class PlipSalt(models.Model):
@@ -258,7 +258,7 @@ class PlipSalt(models.Model):
         # db_table_comment = 'find . -maxdepth 2 -iname "SaltBridges.csv" -exec cat {} \\;  > /tmp/SaltBridges.csv\npsql -h 192.168.0.1 -d vs -U efolador\ndelete from covid19.plip_salt;\n\\copy covid19.plip_salt from \'/tmp/SaltBridges.csv\' with CSV DELIMITER E\'\\t\';'
 
     def __str__(self):
-        return f"{self.__name__}-{self.id_pdb}-{self.id_pocket}"
+        return f"{self.id_pdb}-{self.id_pocket}"
 
 
 class PlipWater(models.Model):
@@ -286,4 +286,4 @@ class PlipWater(models.Model):
         db_table = "plip_water"
 
     def __str__(self):
-        return f"{self.__name__}-{self.id_pdb}-{self.id_pocket}"
+        return f"{self.id_pdb}-{self.id_pocket}"

@@ -5,7 +5,7 @@
             <h5 class="card-title">Pesquisa de interações do banco de dados</h5>
             <form autocomplete="off" class="row g-3" method='post'>
                 {% csrf_token %}
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-floating">
                         <input type="text"
                                name="protein"
@@ -21,7 +21,7 @@
                         <label for="id_protein">Proteína</label>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-floating">
                         <input type="text"
                                maxlength="5"
@@ -38,7 +38,7 @@
                         <label for="id_pdb">PDB</label>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-floating">
                         <input type="text"
                                name="farmaco"
@@ -68,11 +68,9 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Consulta banco PLIP</h5>
-                            <p>Complexos X</p>
-                            <!-- <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable -->
                             <!-- Table with stripped rows -->
                             <div class="table-responsive">
-                                <table class="table datatable">
+                                <table align="right" class="table datatable">
                                     <thead>
                                         <tr>
                                             <th scope="col">Proteína</th>
@@ -87,7 +85,7 @@
                                         {% for complex in complexes|slice:":20" %}
                                             <tr>
                                                 <td>
-                                                    <a href="{% url 'covid_list' %}?protein={{ complex.id_pdb__nm_protein|urlencode }}">{{ complex.id_pdb__nm_protein }}</a>
+                                                    <a href="{% url 'covid_list' %}?protein={{ complex.id_pdb.nm_protein|urlencode }}">{{ complex.id_pdb.nm_protein }}</a>
                                                 </td>
                                                 <td>
                                                     <a href="{% url 'covid_list' %}?pdb={{ complex.id_pdb.id_pdb|urlencode }}">{{ complex.id_pdb.id_pdb }}</a>
@@ -99,10 +97,10 @@
                                                     <a href="{% url 'covid_details' %}?pocket={{ complex.id|urlencode }}">{{ complex.id_pocket }}</a>
                                                 </td>
                                                 <td>
-                                                    <a href="{% url 'covid_details' %}?analogo={{ complex.id|urlencode }}">{{ complex.nm_analogo }}</a>
+                                            <a href="{% url 'covid_details' %}?id_pdb={{ complex.id_pdb.id_pdb|urlencode }}&id_pocket={{ complex.id_pocket|urlencode }}&nm_farmaco={{ complex.nm_farmaco|urlencode }}&nm_analogo={{ complex.nm_analogo|urlencode }}">{{ complex.nm_analogo }}</a>
                                                 </td>
                                                 <td>
-                                                    <a href="{% url 'covid_details' %}?score={{ complex.id|urlencode }}">{{ complex.vl_score }}</a>
+                                                    {{ complex.vl_score }}
                                                 </td>
                                             </tr>
                                         {% endfor %}

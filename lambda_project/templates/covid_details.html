@@ -1,100 +1,290 @@
-
 {% extends "base.html" %}
+{% load customfilters %}
 
 {% block content %}
+
     <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Pesquisa de interações do banco de dados</h5>
-            <form class="row g-3" method='post'>
-                {% csrf_token %}
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <input type="text"
-                               maxlength="5"
-                               name="protein"
-                               class="form-control"
-                               id="id_protein"
-                               placeholder="Proteína">
-                        <label for="id_protein">Proteína</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <input type="number"
-                               name="farmaco"
-                               class="form-control"
-                               id="id_farmaco"
-                               placeholder="Farmaco">
-                        <label for="id_farmaco">Farmaco</label>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Pesquisar</button>
-                    <button type="reset" class="btn btn-secondary">Limpar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <section class="section">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Consulta banco PLIP</h5>
-                        <p>Complexos X</p>
-                        <!-- <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable -->
-                        <!-- Table with stripped rows -->
-                        <div class="table-responsive">
-                            <table class="table datatable">
-                                <thead>
+      <div class="card-body">
+            <h5 class="card-title">Interações entre {{ id_pdb }}-{{ id_pocket }} com fármaco {{ nm_farmaco}}-{{ nm_analogo }}</h5>
+
+        <!-- Accordion without outline borders -->
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            Hidrofobicas
+              </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
+                                {% for field in pliphydrophobic_fields%}
+                                <tr>
+                                    <th scope="col">{{ field.verbose_name}}</th>
+                                </tr>
+                                {% endfor %}
+                            </thead>
+                            <tbody>
+                                {% for interaction in pliphydrophobic %}
                                     <tr>
-                                        <th scope="col">Proteína</th>
-                                        <th scope="col">PDB</th>
-                                        <th scope="col">Fármaco</th>
-                                        <th scope="col">Pocket</th>
-                                        <th scope="col">Análogo</th>
-                                        <th scope="col">Score</th>
+                                        {% for field in pliphydrophobic_fields%}
+                                        <td>
+                                            {{ interaction|get_attribute:field.name}}
+                                        </td>
+                                        {% endfor %}
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {% for complex in complexes|slice:":20" %}
-                                        <tr>
-                                            {% if farmaco %}
-                                                <td>{{ protein }}</td>
-                                            {% else %}
-                                                <td>
-                                                    <a href="url 'covid' protein=complex.nm_protein">{{ complex.nm_protein }}</a>
-                                                </td>
-                                            {% endif %}
-                                            <td>
-                                                <a href="url 'covid' pdb=complex.id_pdb.id_pdb">{{ complex.id_pdb.id_pdb }}</a>
-                                            </td>
-                                            <td>{{ complex.id_pdb.id_pdb }}</td>
-                                            {% if farmaco %}
-                                                <td>{{ farmaco }}</td>
-                                            {% else %}
-                                                <td>
-                                                    <a href="url 'covid' farmaco=complex.nm_farmaco">{{ complex.nm_farmaco }}</a>
-                                                </td>
-                                            {% endif %}
-                                            <td>
-                                                <a href="url 'covid_details' pocket=complex.id_pocket">{{ complex.id_pocket }}</a>
-                                            </td>
-                                            <td>
-                                                <a href="url 'covid_details' analogo=complex.nm_analogo">{{ complex.nm_analogo }}</a>
-                                            </td>
-                                            <td>
-                                                <a href="url 'covid_details' score=complex.vl_score">{{ complex.vl_score }}</a>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- End Table with stripped rows -->
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                            Água
+              </button>
+            </h2>
+            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
+                                {% for field in plipwater_fields%}
+                                <tr>
+                                    <th scope="col">{{ field.verbose_name}}</th>
+                                </tr>
+                                {% endfor %}
+                            </thead>
+                            <tbody>
+                                {% for interaction in plipwater %}
+                                    <tr>
+                                        {% for field in plipwater_fields %}
+                                        <td>
+                                            {{ interaction|get_attribute:field.name}}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                            Halogeneas
+              </button>
+            </h2>
+            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
+                                {% for field in pliphalogen_fields%}
+                                <tr>
+                                    <th scope="col">{{ field.verbose_name}}</th>
+                                </tr>
+                                {% endfor %}
+                            </thead>
+                            <tbody>
+                                {% for interaction in pliphalogen %}
+                                    <tr>
+                                        {% for field in pliphalogen_fields %}
+                                        <td>
+                                            {{ interaction|get_attribute:field.name}}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                            Hidrogenio
+              </button>
+            </h2>
+            <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
+                                {% for field in pliphydrogen_fields%}
+                                <tr>
+                                    <th scope="col">{{ field.verbose_name}}</th>
+                                </tr>
+                                {% endfor %}
+                            </thead>
+                            <tbody>
+                                {% for interaction in pliphydrogen %}
+                                    <tr>
+                                        {% for field in pliphydrogen_fields %}
+                                        <td>
+                                            {{ interaction|get_attribute:field.name}}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                            Metalicas
+              </button>
+            </h2>
+            <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
+                                {% for field in plipmetal_fields%}
+                                <tr>
+                                    <th scope="col">{{ field.verbose_name}}</th>
+                                </tr>
+                                {% endfor %}
+                            </thead>
+                            <tbody>
+                                {% for interaction in plipmetal %}
+                                    <tr>
+                                        {% for field in plipmetal_fields %}
+                                        <td>
+                                            {{ interaction|get_attribute:field.name}}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingSix">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
+                            Cation-pi
+              </button>
+            </h2>
+            <div id="flush-collapseSix" class="accordion-collapse collapse" aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
+                                {% for field in plippication_fields%}
+                                <tr>
+                                    <th scope="col">{{ field.verbose_name}}</th>
+                                </tr>
+                                {% endfor %}
+                            </thead>
+                            <tbody>
+                                {% for interaction in plippication %}
+                                    <tr>
+                                        {% for field in plippication_fields %}
+                                        <td>
+                                            {{ interaction|get_attribute:field.name}}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingSeven">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseSeven">
+                            Empilhamento pi
+              </button>
+            </h2>
+            <div id="flush-collapseSeven" class="accordion-collapse collapse" aria-labelledby="flush-headingSeven" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
+                                {% for field in plippistacking_fields%}
+                                <tr>
+                                    <th scope="col">{{ field.verbose_name}}</th>
+                                </tr>
+                                {% endfor %}
+                            </thead>
+                            <tbody>
+                                {% for interaction in plippistacking %}
+                                    <tr>
+                                        {% for field in plippistacking_fields %}
+                                        <td>
+                                            {{ interaction|get_attribute:field.name}}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingEight">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEight" aria-expanded="false" aria-controls="flush-collapseEight">
+                            Pontes salinas
+              </button>
+            </h2>
+            <div id="flush-collapseEight" class="accordion-collapse collapse" aria-labelledby="flush-headingEight" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
+                                {% for field in plipsalt_fields%}
+                                <tr>
+                                    <th scope="col">{{ field.verbose_name}}</th>
+                                </tr>
+                                {% endfor %}
+                            </thead>
+                            <tbody>
+                                {% for interaction in plipsalt %}
+                                    <tr>
+                                        {% for field in plipsalt_fields %}
+                                        <td>
+                                            {{ interaction|get_attribute:field.name}}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+        </div><!-- End Accordion without outline borders -->
+
+      </div> <!-- final do card -->
+    </div>
+
 {% endblock content %}

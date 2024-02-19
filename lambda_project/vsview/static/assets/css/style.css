@@ -951,6 +951,7 @@ h6 {
 
 .dashboard .top-selling .table tbody td {
   vertical-align: middle;
+  text-align: right;
 }
 
 .dashboard .top-selling img {
